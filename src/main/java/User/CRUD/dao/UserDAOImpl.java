@@ -1,51 +1,47 @@
 package User.CRUD.dao;
 
 import User.CRUD.model.User;
-import org.hibernate.Session;
 
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
-    private SessionFactory sessionFactory;
 
-    @Autowired
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
+    @Transactional
     public List<User> allUsers() {
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("from User").list();
+        return em.createQuery("from User").getResultList();
     }
 
     @Override
+    @Transactional
     public void add(User user) {
-        Session session = sessionFactory.getCurrentSession();
-        session.persist(user);
+        em.persist(user);
     }
 
     @Override
-    public void delete(User user) {
-        Session session = sessionFactory.getCurrentSession();
-        session.delete(user);
+    @Transactional
+    public void remove(User user) {
+        em.remove(em.contains(user) ? user : em.merge(user));
     }
 
     @Override
+    @Transactional
     public void edit(User user) {
-        Session session = sessionFactory.getCurrentSession();
-        session.update(user);
+        em.merge(user);
     }
 
     @Override
+    @Transactional
     public User getById(int id) {
-        Session session = sessionFactory.getCurrentSession();
-        return (User) session.get(User.class, id);
+        return em.find(User.class, id);
     }
 }

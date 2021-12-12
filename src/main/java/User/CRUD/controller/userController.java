@@ -63,11 +63,11 @@ public class userController {
     }
 
     @GetMapping(value = "/delete/{id}")
-    public ModelAndView deleteUser(@PathVariable("id") int id) {
+    public ModelAndView deleteUser(@PathVariable int id) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/");
         User user = userService.getById(id);
-        userService.delete(user);
+        userService.remove(user);
         return modelAndView;
     }
 }
