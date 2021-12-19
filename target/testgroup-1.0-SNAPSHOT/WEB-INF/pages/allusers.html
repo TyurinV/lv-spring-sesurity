@@ -13,6 +13,9 @@
         <th>Фамилия</th>
         <th>Пол</th>
         <th>Курящий</th>
+        <th>login</th>
+        <th>password</th>
+        <th>roles</th>
         <th>Действия</th>
     </tr>
     <tr th:each="user : ${userList}">
@@ -21,6 +24,9 @@
         <td th:utext="${user.getLastName()}"></td>
         <td th:utext="${user.getSex()}"></td>
         <td th:utext="${user.isSmoker()}"></td>
+        <td th:utext="${user.login()}"></td>
+        <td th:utext="${user.password()}"></td>
+        <td th:utext="${user.roles()}"></td>
         <td>
             <a th:href="@{'/edit/' + ${user.id}}">edit</a>
             <a th:href="@{'/delete/' + ${user.id}}">delete</a>
